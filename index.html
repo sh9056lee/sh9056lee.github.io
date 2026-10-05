@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>문제집 도감 — 초·중·고 문제집과 오답노트를 한곳에</title>
+<meta name="description" content="초·중·고 문제집을 찾고, 담고, 관리하고 오답노트와 복습까지 한 번에. 오답 사진은 내 폰에만 저장됩니다.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="문제집 도감">
+<meta property="og:description" content="초·중·고 문제집을 찾고, 담고, 관리하고 오답노트와 복습까지 한 번에">
+<meta property="og:image" content="https://sh9056lee.github.io/images/og.png">
+<meta property="og:url" content="https://sh9056lee.github.io/">
+<link rel="icon" href="images/icon.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+  :root{
+    --bg1:#fbf6ec; --bg2:#f2e6d0; --cream:#fffdf8; --line:#ecdfc9;
+    --ink:#3f3324; --body:#5a4a38; --muted:#7d6a50;
+    --brand:#8a6a40; --accent:#d9876a; --accent-dk:#c8735a;
+    --mint:#9cc5ad; --rose:#e09b93; --sand:#e8cf8e;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Pretendard Variable',Pretendard,'Apple SD Gothic Neo',-apple-system,
+      BlinkMacSystemFont,'Segoe UI',Roboto,'Malgun Gothic',sans-serif;
+    background:var(--bg1); color:var(--body); line-height:1.7;
+    word-break:keep-all; -webkit-text-size-adjust:100%;
+  }
+  a{color:inherit}
+  img{display:block;max-width:100%}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+
+  /* 상단 */
+  .top{position:sticky;top:0;z-index:10;background:rgba(251,246,236,.86);
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(236,223,201,.7)}
+  .top .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+  .logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:800;color:var(--ink);font-size:17px}
+  .logo img{width:32px;height:32px;border-radius:9px}
+  .top nav{display:flex;gap:20px;font-size:14px;color:var(--muted)}
+  .top nav a{text-decoration:none}
+  .top nav a:hover{color:var(--brand)}
+
+  /* 히어로 */
+  .hero{position:relative;overflow:hidden;background:linear-gradient(160deg,var(--bg1) 0%,var(--bg2) 100%)}
+  .hero::before,.hero::after{content:"";position:absolute;border-radius:50%;border:2px solid rgba(217,135,106,.14);pointer-events:none}
+  .hero::before{width:760px;height:760px;left:-260px;top:-180px}
+  .hero::after{width:520px;height:520px;left:-140px;top:-60px}
+  .hero .wrap{position:relative;display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;padding-top:64px;padding-bottom:0}
+  .badge{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--brand);
+    background:var(--cream);border:1px solid var(--line);border-radius:99px;padding:6px 12px}
+  .badge i{width:6px;height:6px;border-radius:50%;background:var(--accent);display:inline-block}
+  h1{font-size:52px;line-height:1.2;font-weight:800;color:var(--ink);letter-spacing:-1.5px;margin:18px 0 16px}
+  .lead{font-size:19px;color:var(--muted);line-height:1.65}
+  .cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+  .btn{display:inline-flex;align-items:center;gap:10px;text-decoration:none;font-weight:700;font-size:16px;
+    padding:15px 22px;border-radius:16px;transition:transform .15s,box-shadow .15s}
+  .btn:hover{transform:translateY(-1px)}
+  .btn.play{background:var(--ink);color:#fff;box-shadow:0 8px 20px rgba(63,51,36,.22)}
+  .btn.play svg{width:22px;height:22px}
+  .btn.play small{display:block;font-size:11px;font-weight:500;opacity:.75;line-height:1.2}
+  .btn.play b{display:block;font-size:17px;line-height:1.25}
+  .btn.ghost{background:var(--cream);color:var(--brand);border:1px solid var(--line)}
+  .facts{display:flex;gap:22px;margin-top:28px;font-size:13px;color:var(--muted)}
+  .facts span::before{content:"✓ ";color:var(--accent);font-weight:800}
+  .hero-shot{justify-self:center;align-self:end}
+
+  /* 폰 프레임 */
+  .phone{width:300px;border-radius:38px;background:#2c241a;padding:10px;
+    box-shadow:0 30px 60px rgba(90,70,40,.25),0 4px 12px rgba(90,70,40,.15)}
+  .phone img{border-radius:29px;width:100%;aspect-ratio:600/1173;object-fit:cover;background:var(--cream)}
+  .hero .phone{border-bottom-left-radius:0;border-bottom-right-radius:0;padding-bottom:0}
+  .hero .phone img{border-bottom-left-radius:0;border-bottom-right-radius:0;aspect-ratio:600/980;object-position:top}
+
+  /* 기능 */
+  section{padding:96px 0}
+  .sec-head{text-align:center;max-width:620px;margin:0 auto 64px}
+  .eyebrow{font-size:13px;font-weight:700;color:var(--accent);letter-spacing:.5px}
+  h2{font-size:34px;line-height:1.3;font-weight:800;color:var(--ink);letter-spacing:-.8px;margin-top:8px}
+  .sec-head p{margin-top:12px;color:var(--muted);font-size:16px}
+  .feature{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;margin-bottom:96px}
+  .feature:last-child{margin-bottom:0}
+  .feature.rev .f-text{order:2}
+  .f-shot{justify-self:center}
+  .f-num{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:14px;
+    font-size:20px;margin-bottom:16px}
+  .c1{background:#f6dcd6}.c2{background:#d9ebe0}.c3{background:#f5ebcf}.c4{background:#e9e1f2}
+  h3{font-size:28px;line-height:1.35;color:var(--ink);font-weight:800;letter-spacing:-.6px}
+  .f-text>p{margin-top:12px;font-size:16px;color:var(--muted)}
+  .f-text ul{list-style:none;margin-top:20px;display:grid;gap:10px}
+  .f-text li{position:relative;padding-left:26px;font-size:15px}
+  .f-text li::before{content:"";position:absolute;left:4px;top:9px;width:9px;height:9px;border-radius:3px;background:var(--accent);opacity:.75}
+
+  /* 사진 안내 */
+  .privacy{background:var(--cream);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .p-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .p-card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:26px 22px}
+  .p-card .ic{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px}
+  .p-card h4{font-size:17px;color:var(--ink);font-weight:700}
+  .p-card p{font-size:14px;color:var(--muted);margin-top:6px}
+
+  /* 마무리 */
+  .end{text-align:center}
+  .end .box{background:linear-gradient(150deg,#fff8ef,#f3e3c9);border:1px solid var(--line);border-radius:32px;padding:56px 24px}
+  .end img{width:84px;height:84px;border-radius:22px;margin:0 auto 18px;box-shadow:0 8px 20px rgba(150,110,60,.18)}
+  .end .cta{justify-content:center}
+
+  footer{padding:36px 0 48px;font-size:13px;color:var(--muted)}
+  footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
+  footer nav{display:flex;gap:18px}
+  footer a{text-decoration:none}
+  footer a:hover{color:var(--brand);text-decoration:underline}
+
+  @media (max-width:860px){
+    .top nav{display:none}
+    .hero .wrap{grid-template-columns:1fr;text-align:center;padding-top:44px;gap:36px}
+    .cta,.facts{justify-content:center}
+    h1{font-size:38px}
+    .lead{font-size:17px}
+    .phone{width:250px;border-radius:32px}
+    .phone img{border-radius:24px}
+    section{padding:72px 0}
+    .sec-head{margin-bottom:48px}
+    h2{font-size:27px}
+    .feature{grid-template-columns:1fr;gap:28px;margin-bottom:72px;text-align:center}
+    .feature.rev .f-text{order:0}
+    .f-text ul{text-align:left;max-width:360px;margin-left:auto;margin-right:auto}
+    h3{font-size:23px}
+    .p-grid{grid-template-columns:1fr}
+    .facts{flex-wrap:wrap;gap:8px 16px}
+    footer .wrap{flex-direction:column;align-items:center;text-align:center}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#"><img src="images/icon.png" alt="">문제집 도감</a>
+    <nav>
+      <a href="#features">기능</a>
+      <a href="#photo">사진 보관</a>
+      <a href="/bootradar-legal/">개인정보 처리방침</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero" style="padding:0">
+    <div class="wrap">
+      <div>
+        <span class="badge"><i></i>초·중·고 학부모와 학생을 위한 무료 앱</span>
+        <h1>문제집은 끝까지,<br>오답은 다시 한 번</h1>
+        <p class="lead">초·중·고 문제집을 찾고, 담고, 관리하고<br>오답노트와 복습까지 한 번에.</p>
+        <div class="cta">
+          <a class="btn play" href="https://play.google.com/store/apps/details?id=com.bootradar.app">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M4.2 2.4c-.3.3-.4.7-.4 1.2v16.8c0 .5.1.9.4 1.2l9.5-9.6-9.5-9.6zm10.6 10.7 2.7 2.7-11 6.3 8.3-9zm3.9-3.8 2.8 1.6c.8.5.8 1.7 0 2.2l-2.8 1.6-3-2.7 3-2.7zM6.5 1.9l11 6.3-2.7 2.7-8.3-9z"/></svg>
+            <span><small>지금 받기</small><b>Google Play</b></span>
+          </a>
+          <a class="btn ghost" href="#features">기능 둘러보기</a>
+        </div>
+        <div class="facts"><span>무료</span><span>Android</span><span>오답 사진은 내 폰에만</span></div>
+      </div>
+      <div class="hero-shot">
+        <div class="phone"><img src="images/browse.webp" alt="문제집 둘러보기 화면 — 바코드, 과목별 탐색, 텍스트 검색"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">이렇게 써요</span>
+        <h2>사고, 풀고, 틀리고, 다시 푸는<br>모든 과정을 한 앱에</h2>
+        <p>서점에서 고른 문제집이 어디까지 풀렸는지, 어떤 문제를 틀렸는지 흩어지지 않게 모아 둡니다.</p>
+      </div>
+
+      <div class="feature">
+        <div class="f-text">
+          <div class="f-num c1">📚</div>
+          <h3>문제집 찾기와 나의 책장</h3>
+          <p>학년·과목·출판사로 좁혀 보고, 책 뒤 바코드만 비추면 바로 찾아요.</p>
+          <ul>
+            <li>바코드가 닳았다면 표지를 찍어 검색</li>
+            <li>난이도·구성 같은 책의 특징을 한눈에</li>
+            <li>예정 · 풀고 있음 · 완료로 진도 표시</li>
+            <li>자녀가 여럿이면 학습자별로 책장을 따로</li>
+          </ul>
+        </div>
+        <div class="f-shot"><div class="phone"><img src="images/detail.webp" alt="책 상세 화면 — 문제집 DNA" loading="lazy"></div></div>
+      </div>
+
+      <div class="feature rev">
+        <div class="f-text">
+          <div class="f-num c2">📝</div>
+          <h3>찍어 두면 정리되는 오답노트</h3>
+          <p>틀린 문제를 사진으로 남기면 단원별 폴더로 저절로 정리돼요.</p>
+          <ul>
+            <li>필요한 부분만 잘라내고, 적어 둔 풀이는 가리기</li>
+            <li>지문이 긴 문제는 지문 한 장에 여러 문항을 묶기</li>
+            <li>틀린 이유를 남겨 두면 약한 곳이 보여요</li>
+          </ul>
+        </div>
+        <div class="f-shot"><div class="phone"><img src="images/odap.webp" alt="오답노트 목록 화면" loading="lazy"></div></div>
+      </div>
+
+      <div class="feature">
+        <div class="f-text">
+          <div class="f-num c3">🔁</div>
+          <h3>잊어버릴 때쯤 다시, 복습 카드</h3>
+          <p>망각곡선에 맞춰 다시 볼 때가 된 문제를 알려줘요.</p>
+          <ul>
+            <li>카드를 넘기며 맞았는지 틀렸는지만 표시</li>
+            <li>다음 복습 날짜는 자동으로</li>
+            <li>연속으로 맞히면 '극복한 문제'로 졸업</li>
+          </ul>
+        </div>
+        <div class="f-shot"><div class="phone"><img src="images/review.webp" alt="복습 카드 화면" loading="lazy"></div></div>
+      </div>
+
+      <div class="feature rev">
+        <div class="f-text">
+          <div class="f-num c4">🖨️</div>
+          <h3>종이에 다시 풀기, PDF 내보내기</h3>
+          <p>고른 오답을 시험지처럼 모아 인쇄해요.</p>
+          <ul>
+            <li>한 쪽에 넣을 문항 수와 순서를 직접</li>
+            <li>다시 풀기용 · 복습용(메모 함께) 선택</li>
+            <li>인쇄될 모습을 미리 보고 확인</li>
+          </ul>
+        </div>
+        <div class="f-shot"><div class="phone"><img src="images/pdf.webp" alt="PDF 내보내기 화면" loading="lazy"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="privacy" id="photo">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">사진 보관</span>
+        <h2>오답 사진은 내 폰에만 남아요</h2>
+        <p>아이의 손글씨와 학습 기록, 함부로 밖으로 보내지 않습니다.</p>
+      </div>
+      <div class="p-grid">
+        <div class="p-card">
+          <div class="ic c2">📱</div>
+          <h4>기기에 저장</h4>
+          <p>오답 사진은 휴대폰의 [문서 › 문제집도감] 폴더에 저장되고, 서버로 보내지 않아요.</p>
+        </div>
+        <div class="p-card">
+          <div class="ic c1">🔒</div>
+          <h4>운영자도 볼 수 없어요</h4>
+          <p>사진이 서버에 없으니 운영자가 열어볼 방법이 없어요. 앱을 지워도 폴더의 사진은 그대로 남아요.</p>
+        </div>
+        <div class="p-card">
+          <div class="ic c3">🔍</div>
+          <h4>표지 검색할 때만</h4>
+          <p>표지를 찍어 책을 찾을 때만 제목 인식을 위해 그 표지 사진이 전송돼요.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="end">
+    <div class="wrap">
+      <div class="box">
+        <img src="images/icon.png" alt="문제집 도감 아이콘">
+        <h2>오늘 푼 문제집부터<br>담아 보세요</h2>
+        <p style="color:var(--muted);margin-top:10px">무료 · Android</p>
+        <div class="cta">
+          <a class="btn play" href="https://play.google.com/store/apps/details?id=com.bootradar.app">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M4.2 2.4c-.3.3-.4.7-.4 1.2v16.8c0 .5.1.9.4 1.2l9.5-9.6-9.5-9.6zm10.6 10.7 2.7 2.7-11 6.3 8.3-9zm3.9-3.8 2.8 1.6c.8.5.8 1.7 0 2.2l-2.8 1.6-3-2.7 3-2.7zM6.5 1.9l11 6.3-2.7 2.7-8.3-9z"/></svg>
+            <span><small>지금 받기</small><b>Google Play</b></span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>© 2026 문제집 도감 · 개인 개발자 이상희</div>
+    <nav>
+      <a href="/bootradar-legal/">개인정보 처리방침</a>
+      <a href="mailto:bookradar.help@gmail.com">문의 bookradar.help@gmail.com</a>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
